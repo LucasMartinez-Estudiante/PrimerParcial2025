@@ -64,7 +64,7 @@
             //array $colVuelosProgramados
             //object $vuelo
             //bool $elementosEnArray
-            $colVuelosProgramados = $this->getColeccionVuelosProgramados();
+            $colVuelosProgramados = $aerolinea->getColeccionVuelosProgramados();
             $elementosEnArray = false;
             if (count($colVuelosProgramados) != 0){
                 $elementosEnArray = true;
@@ -77,8 +77,12 @@
             return ($elementosEnArray) ? $vuelosStr."\n" : "Esta aerolínea no tiene vuelos programados\n";
         }
 
-        /**
-         * 
+          /** Método que recibe por parámetro la cantidad de asientos, una 
+         * fecha y un destino y el aeropuerto realiza automáticamente la 
+         * asignación al vuelo
+         * @param int $cant_asientos
+         * @param array $unaFecha
+         * @param string $unDestino
          */
         public function ventaAutomatica($cant_asientos, $unaFecha, $unDestino){
             $colAerolineas = $this->getColeccionAerolineas();
@@ -93,11 +97,18 @@
                 $numero_vuelos = count($colVuelos);
 
                 while ($j<$numero_vuelos && !$bandera){
+                    $asientos_disponibles = $colVuelos[$j]->getAsientos_Disponibles();
+                    $fecha = $colVuelos[$j]->getFecha();
+                    $destino = $colVuelos[$j]->getDestino();
 
-                    if ()
+                    if ($cant_asientos>=$asientos_disponibles && $unaFecha == $fecha && $unDestino == $destino){
+                        $colVuelos[$j]->asignarAsientosDisponibles($cant_asientos);
+                        $bandera = true;
+                    }
                     $j++;
                 }
                 $i++;
             }
         }
+
     }
